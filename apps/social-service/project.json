@@ -1,0 +1,29 @@
+{
+  "name": "social-service",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "projectType": "application",
+  "sourceRoot": "apps/social-service/src",
+  "tags": [
+    "scope:backend",
+    "type:microservice"
+  ],
+  "targets": {
+    "build": {
+      "executor": "@nx/node:build",
+      "outputs": [
+        "{options.outputPath}"
+      ],
+      "options": {
+        "outputPath": "dist/apps/social-service",
+        "main": "apps/social-service/src/main.ts",
+        "tsConfig": "apps/social-service/tsconfig.app.json"
+      }
+    },
+    "serve": {
+      "executor": "@nx/js:node",
+      "options": {
+        "buildTarget": "social-service:build"
+      }
+    }
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "mfe-commerce": "http://localhost:4300/remoteEntry.json",
+  "mfe-finance": "http://localhost:4301/remoteEntry.json",
+  "mfe-games": "http://localhost:4302/remoteEntry.json",
+  "mfe-impact": "http://localhost:4303/remoteEntry.json",
+  "mfe-life": "http://localhost:4304/remoteEntry.json",
+  "mfe-local": "http://localhost:4305/remoteEntry.json",
+  "mfe-media": "http://localhost:4306/remoteEntry.json",
+  "mfe-social": "http://localhost:4307/remoteEntry.json",
+  "mfe-utilities": "http://localhost:4308/remoteEntry.json"
+}

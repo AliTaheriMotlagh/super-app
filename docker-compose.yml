@@ -1,0 +1,146 @@
+name: ali-super-app
+
+x-backend: &backend
+  image: ali-super-app-backend:local
+  build:
+    context: .
+    dockerfile: Dockerfile.backend
+  restart: unless-stopped
+  environment:
+    DATABASE_URL: postgresql://ali:${POSTGRES_PASSWORD:-ali}@postgres:5432/superapp
+    JWT_SECRET: ${JWT_SECRET:-dev-only-change-this-secret-in-production}
+    TREE_PRICE: ${TREE_PRICE:-10}
+    TRANSLATE_URL: http://libretranslate:5000/translate
+  depends_on:
+    postgres:
+      condition: service_healthy
+
+services:
+  postgres:
+    image: postgres:17-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ali
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-ali}
+      POSTGRES_DB: superapp
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ali -d superapp"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
+  libretranslate:
+    image: libretranslate/libretranslate:latest
+    restart: unless-stopped
+    environment:
+      LT_LOAD_ONLY: en,fa
+    volumes:
+      - translate_models:/home/libretranslate/.local
+
+  utility-service:
+    <<: *backend
+    command: ["node","dist/apps/utility-service/main.js"]
+  commerce-service:
+    <<: *backend
+    command: ["node","dist/apps/commerce-service/main.js"]
+  productivity-service:
+    <<: *backend
+    command: ["node","dist/apps/productivity-service/main.js"]
+  geo-service:
+    <<: *backend
+    command: ["node","dist/apps/geo-service/main.js"]
+  social-service:
+    <<: *backend
+    command: ["node","dist/apps/social-service/main.js"]
+  media-service:
+    <<: *backend
+    command: ["node","dist/apps/media-service/main.js"]
+  finance-service:
+    <<: *backend
+    command: ["node","dist/apps/finance-service/main.js"]
+  content-service:
+    <<: *backend
+    command: ["node","dist/apps/content-service/main.js"]
+    depends_on:
+      postgres:
+        condition: service_healthy
+      libretranslate:
+        condition: service_started
+  notification-service:
+    <<: *backend
+    command: ["node","dist/apps/notification-service/main.js"]
+  game-service:
+    <<: *backend
+    command: ["node","dist/apps/game-service/main.js"]
+  impact-service:
+    <<: *backend
+    command: ["node","dist/apps/impact-service/main.js"]
+
+  api-gateway:
+    <<: *backend
+    command: ["node","dist/apps/api-gateway/main.js"]
+    environment:
+      DATABASE_URL: postgresql://ali:${POSTGRES_PASSWORD:-ali}@postgres:5432/superapp
+      JWT_SECRET: ${JWT_SECRET:-dev-only-change-this-secret-in-production}
+      CORS_ORIGINS: ${CORS_ORIGINS:-http://localhost:8080}
+      UPLOAD_DIR: /app/uploads
+      MAX_UPLOAD_BYTES: ${MAX_UPLOAD_BYTES:-25000000}
+      UTILITY_SERVICE_HOST: utility-service
+      COMMERCE_SERVICE_HOST: commerce-service
+      PRODUCTIVITY_SERVICE_HOST: productivity-service
+      GEO_SERVICE_HOST: geo-service
+      SOCIAL_SERVICE_HOST: social-service
+      MEDIA_SERVICE_HOST: media-service
+      FINANCE_SERVICE_HOST: finance-service
+      CONTENT_SERVICE_HOST: content-service
+      NOTIFICATION_SERVICE_HOST: notification-service
+      GAME_SERVICE_HOST: game-service
+      IMPACT_SERVICE_HOST: impact-service
+    volumes:
+      - uploads:/app/uploads
+    ports:
+      - "5000:5000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      utility-service:
+        condition: service_started
+      commerce-service:
+        condition: service_started
+      productivity-service:
+        condition: service_started
+      geo-service:
+        condition: service_started
+      social-service:
+        condition: service_started
+      media-service:
+        condition: service_started
+      finance-service:
+        condition: service_started
+      content-service:
+        condition: service_started
+      notification-service:
+        condition: service_started
+      game-service:
+        condition: service_started
+      impact-service:
+        condition: service_started
+
+  frontend:
+    image: ali-super-app-frontend:local
+    build:
+      context: .
+      dockerfile: Dockerfile.frontend
+    restart: unless-stopped
+    ports:
+      - "8080:80"
+    depends_on:
+      api-gateway:
+        condition: service_started
+
+volumes:
+  pgdata:
+  uploads:
+  translate_models:

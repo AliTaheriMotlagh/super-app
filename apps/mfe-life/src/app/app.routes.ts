@@ -1,0 +1,1 @@
+import { Routes } from '@angular/router'; import { MicroAppComponent } from '@ali-labs/runtime'; export const appRoutes: Routes = [{path:':slug',component:MicroAppComponent},{path:'',redirectTo:'../',pathMatch:'full'}];

@@ -1,0 +1,11 @@
+{
+  "mfe-commerce": "/remotes/mfe-commerce/remoteEntry.json",
+  "mfe-finance": "/remotes/mfe-finance/remoteEntry.json",
+  "mfe-games": "/remotes/mfe-games/remoteEntry.json",
+  "mfe-impact": "/remotes/mfe-impact/remoteEntry.json",
+  "mfe-life": "/remotes/mfe-life/remoteEntry.json",
+  "mfe-local": "/remotes/mfe-local/remoteEntry.json",
+  "mfe-media": "/remotes/mfe-media/remoteEntry.json",
+  "mfe-social": "/remotes/mfe-social/remoteEntry.json",
+  "mfe-utilities": "/remotes/mfe-utilities/remoteEntry.json"
+}

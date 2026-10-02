@@ -1,0 +1,10 @@
+{
+  "manifest_version": 3,
+  "name": "Tabdile Pool",
+  "version": "1.0.0",
+  "description": "Convert selected prices using live Frankfurter FX rates.",
+  "permissions": ["contextMenus", "storage", "activeTab", "scripting"],
+  "host_permissions": ["https://api.frankfurter.app/*"],
+  "background": {"service_worker": "service-worker.js"},
+  "action": {"default_popup": "popup.html"}
+}

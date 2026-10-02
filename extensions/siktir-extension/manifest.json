@@ -1,0 +1,11 @@
+{
+  "manifest_version": 3,
+  "name": "Siktir Capture",
+  "version": "1.0.0",
+  "description": "Send selected text and links to the Siktir micro-app in Ali Super App.",
+  "permissions": ["contextMenus", "storage", "activeTab"],
+  "host_permissions": ["http://localhost:5000/*", "https://*/*"],
+  "background": {"service_worker": "service-worker.js"},
+  "action": {"default_popup": "popup.html", "default_title": "Siktir Capture"},
+  "options_page": "options.html"
+}

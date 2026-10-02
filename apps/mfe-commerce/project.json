@@ -1,0 +1,78 @@
+{
+  "name": "mfe-commerce",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "projectType": "application",
+  "sourceRoot": "apps/mfe-commerce/src",
+  "tags": [
+    "scope:frontend",
+    "type:remote"
+  ],
+  "targets": {
+    "build": {
+      "executor": "@angular-architects/native-federation:build",
+      "options": {},
+      "configurations": {
+        "production": {
+          "target": "mfe-commerce:esbuild:production"
+        },
+        "development": {
+          "target": "mfe-commerce:esbuild:development",
+          "dev": true
+        }
+      },
+      "defaultConfiguration": "development"
+    },
+    "serve": {
+      "executor": "@angular-architects/native-federation:build",
+      "options": {
+        "target": "mfe-commerce:serve-original:development",
+        "rebuildDelay": 200,
+        "dev": true,
+        "port": 4300
+      }
+    },
+    "esbuild": {
+      "executor": "@angular/build:application",
+      "outputs": [
+        "{options.outputPath}"
+      ],
+      "options": {
+        "outputPath": "dist/apps/mfe-commerce",
+        "index": "apps/mfe-commerce/src/index.html",
+        "browser": "apps/mfe-commerce/src/main.ts",
+        "polyfills": [
+          "zone.js",
+          "es-module-shims"
+        ],
+        "tsConfig": "apps/mfe-commerce/tsconfig.app.json",
+        "styles": [
+          "apps/mfe-commerce/src/styles.css"
+        ],
+        "assets": [
+          {
+            "glob": "**/*",
+            "input": "apps/mfe-commerce/public"
+          }
+        ]
+      },
+      "configurations": {
+        "production": {
+          "optimization": true,
+          "outputHashing": "all",
+          "sourceMap": false
+        },
+        "development": {
+          "optimization": false,
+          "sourceMap": true
+        }
+      },
+      "defaultConfiguration": "development"
+    },
+    "serve-original": {
+      "executor": "@angular/build:dev-server",
+      "options": {
+        "buildTarget": "mfe-commerce:esbuild:development"
+      }
+    }
+  }
+}

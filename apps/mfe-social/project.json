@@ -1,0 +1,78 @@
+{
+  "name": "mfe-social",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "projectType": "application",
+  "sourceRoot": "apps/mfe-social/src",
+  "tags": [
+    "scope:frontend",
+    "type:remote"
+  ],
+  "targets": {
+    "build": {
+      "executor": "@angular-architects/native-federation:build",
+      "options": {},
+      "configurations": {
+        "production": {
+          "target": "mfe-social:esbuild:production"
+        },
+        "development": {
+          "target": "mfe-social:esbuild:development",
+          "dev": true
+        }
+      },
+      "defaultConfiguration": "development"
+    },
+    "serve": {
+      "executor": "@angular-architects/native-federation:build",
+      "options": {
+        "target": "mfe-social:serve-original:development",
+        "rebuildDelay": 200,
+        "dev": true,
+        "port": 4307
+      }
+    },
+    "esbuild": {
+      "executor": "@angular/build:application",
+      "outputs": [
+        "{options.outputPath}"
+      ],
+      "options": {
+        "outputPath": "dist/apps/mfe-social",
+        "index": "apps/mfe-social/src/index.html",
+        "browser": "apps/mfe-social/src/main.ts",
+        "polyfills": [
+          "zone.js",
+          "es-module-shims"
+        ],
+        "tsConfig": "apps/mfe-social/tsconfig.app.json",
+        "styles": [
+          "apps/mfe-social/src/styles.css"
+        ],
+        "assets": [
+          {
+            "glob": "**/*",
+            "input": "apps/mfe-social/public"
+          }
+        ]
+      },
+      "configurations": {
+        "production": {
+          "optimization": true,
+          "outputHashing": "all",
+          "sourceMap": false
+        },
+        "development": {
+          "optimization": false,
+          "sourceMap": true
+        }
+      },
+      "defaultConfiguration": "development"
+    },
+    "serve-original": {
+      "executor": "@angular/build:dev-server",
+      "options": {
+        "buildTarget": "mfe-social:esbuild:development"
+      }
+    }
+  }
+}

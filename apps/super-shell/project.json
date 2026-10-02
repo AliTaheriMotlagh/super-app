@@ -1,0 +1,78 @@
+{
+  "name": "super-shell",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "projectType": "application",
+  "sourceRoot": "apps/super-shell/src",
+  "tags": [
+    "scope:frontend",
+    "type:host"
+  ],
+  "targets": {
+    "build": {
+      "executor": "@angular-architects/native-federation:build",
+      "options": {},
+      "configurations": {
+        "production": {
+          "target": "super-shell:esbuild:production"
+        },
+        "development": {
+          "target": "super-shell:esbuild:development",
+          "dev": true
+        }
+      },
+      "defaultConfiguration": "development"
+    },
+    "serve": {
+      "executor": "@angular-architects/native-federation:build",
+      "options": {
+        "target": "super-shell:serve-original:development",
+        "rebuildDelay": 200,
+        "dev": true,
+        "port": 4200
+      }
+    },
+    "esbuild": {
+      "executor": "@angular/build:application",
+      "outputs": [
+        "{options.outputPath}"
+      ],
+      "options": {
+        "outputPath": "dist/apps/super-shell",
+        "index": "apps/super-shell/src/index.html",
+        "browser": "apps/super-shell/src/main.ts",
+        "polyfills": [
+          "zone.js",
+          "es-module-shims"
+        ],
+        "tsConfig": "apps/super-shell/tsconfig.app.json",
+        "styles": [
+          "apps/super-shell/src/styles.css"
+        ],
+        "assets": [
+          {
+            "glob": "**/*",
+            "input": "apps/super-shell/public"
+          }
+        ]
+      },
+      "configurations": {
+        "production": {
+          "optimization": true,
+          "outputHashing": "all",
+          "sourceMap": false
+        },
+        "development": {
+          "optimization": false,
+          "sourceMap": true
+        }
+      },
+      "defaultConfiguration": "development"
+    },
+    "serve-original": {
+      "executor": "@angular/build:dev-server",
+      "options": {
+        "buildTarget": "super-shell:esbuild:development"
+      }
+    }
+  }
+}

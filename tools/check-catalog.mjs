@@ -1,0 +1,1 @@
+import fs from 'node:fs'; const text=fs.readFileSync('libs/contracts/src/lib/projects.ts','utf8'); const count=(text.match(/"slug":/g)||[]).length; if(count!==44){throw new Error(`Expected 44 apps, found ${count}`)} console.log(`Catalog OK: ${count} apps`);

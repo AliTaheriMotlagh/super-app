@@ -1,0 +1,1 @@
+{"name":"micro-app-runtime","$schema":"../../node_modules/nx/schemas/project-schema.json","sourceRoot":"libs/micro-app-runtime/src","projectType":"library","tags":["scope:shared","type:ui"]}

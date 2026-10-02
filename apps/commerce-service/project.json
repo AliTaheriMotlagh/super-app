@@ -1,0 +1,29 @@
+{
+  "name": "commerce-service",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "projectType": "application",
+  "sourceRoot": "apps/commerce-service/src",
+  "tags": [
+    "scope:backend",
+    "type:microservice"
+  ],
+  "targets": {
+    "build": {
+      "executor": "@nx/node:build",
+      "outputs": [
+        "{options.outputPath}"
+      ],
+      "options": {
+        "outputPath": "dist/apps/commerce-service",
+        "main": "apps/commerce-service/src/main.ts",
+        "tsConfig": "apps/commerce-service/tsconfig.app.json"
+      }
+    },
+    "serve": {
+      "executor": "@nx/js:node",
+      "options": {
+        "buildTarget": "commerce-service:build"
+      }
+    }
+  }
+}

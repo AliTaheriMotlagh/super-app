@@ -1,0 +1,29 @@
+{
+  "name": "impact-service",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "projectType": "application",
+  "sourceRoot": "apps/impact-service/src",
+  "tags": [
+    "scope:backend",
+    "type:microservice"
+  ],
+  "targets": {
+    "build": {
+      "executor": "@nx/node:build",
+      "outputs": [
+        "{options.outputPath}"
+      ],
+      "options": {
+        "outputPath": "dist/apps/impact-service",
+        "main": "apps/impact-service/src/main.ts",
+        "tsConfig": "apps/impact-service/tsconfig.app.json"
+      }
+    },
+    "serve": {
+      "executor": "@nx/js:node",
+      "options": {
+        "buildTarget": "impact-service:build"
+      }
+    }
+  }
+}

@@ -1,0 +1,78 @@
+{
+  "name": "mfe-local",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "projectType": "application",
+  "sourceRoot": "apps/mfe-local/src",
+  "tags": [
+    "scope:frontend",
+    "type:remote"
+  ],
+  "targets": {
+    "build": {
+      "executor": "@angular-architects/native-federation:build",
+      "options": {},
+      "configurations": {
+        "production": {
+          "target": "mfe-local:esbuild:production"
+        },
+        "development": {
+          "target": "mfe-local:esbuild:development",
+          "dev": true
+        }
+      },
+      "defaultConfiguration": "development"
+    },
+    "serve": {
+      "executor": "@angular-architects/native-federation:build",
+      "options": {
+        "target": "mfe-local:serve-original:development",
+        "rebuildDelay": 200,
+        "dev": true,
+        "port": 4305
+      }
+    },
+    "esbuild": {
+      "executor": "@angular/build:application",
+      "outputs": [
+        "{options.outputPath}"
+      ],
+      "options": {
+        "outputPath": "dist/apps/mfe-local",
+        "index": "apps/mfe-local/src/index.html",
+        "browser": "apps/mfe-local/src/main.ts",
+        "polyfills": [
+          "zone.js",
+          "es-module-shims"
+        ],
+        "tsConfig": "apps/mfe-local/tsconfig.app.json",
+        "styles": [
+          "apps/mfe-local/src/styles.css"
+        ],
+        "assets": [
+          {
+            "glob": "**/*",
+            "input": "apps/mfe-local/public"
+          }
+        ]
+      },
+      "configurations": {
+        "production": {
+          "optimization": true,
+          "outputHashing": "all",
+          "sourceMap": false
+        },
+        "development": {
+          "optimization": false,
+          "sourceMap": true
+        }
+      },
+      "defaultConfiguration": "development"
+    },
+    "serve-original": {
+      "executor": "@angular/build:dev-server",
+      "options": {
+        "buildTarget": "mfe-local:esbuild:development"
+      }
+    }
+  }
+}

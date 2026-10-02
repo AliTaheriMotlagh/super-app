@@ -1,0 +1,29 @@
+{
+  "name": "finance-service",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "projectType": "application",
+  "sourceRoot": "apps/finance-service/src",
+  "tags": [
+    "scope:backend",
+    "type:microservice"
+  ],
+  "targets": {
+    "build": {
+      "executor": "@nx/node:build",
+      "outputs": [
+        "{options.outputPath}"
+      ],
+      "options": {
+        "outputPath": "dist/apps/finance-service",
+        "main": "apps/finance-service/src/main.ts",
+        "tsConfig": "apps/finance-service/tsconfig.app.json"
+      }
+    },
+    "serve": {
+      "executor": "@nx/js:node",
+      "options": {
+        "buildTarget": "finance-service:build"
+      }
+    }
+  }
+}

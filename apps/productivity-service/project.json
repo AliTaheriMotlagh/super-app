@@ -1,0 +1,29 @@
+{
+  "name": "productivity-service",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "projectType": "application",
+  "sourceRoot": "apps/productivity-service/src",
+  "tags": [
+    "scope:backend",
+    "type:microservice"
+  ],
+  "targets": {
+    "build": {
+      "executor": "@nx/node:build",
+      "outputs": [
+        "{options.outputPath}"
+      ],
+      "options": {
+        "outputPath": "dist/apps/productivity-service",
+        "main": "apps/productivity-service/src/main.ts",
+        "tsConfig": "apps/productivity-service/tsconfig.app.json"
+      }
+    },
+    "serve": {
+      "executor": "@nx/js:node",
+      "options": {
+        "buildTarget": "productivity-service:build"
+      }
+    }
+  }
+}
